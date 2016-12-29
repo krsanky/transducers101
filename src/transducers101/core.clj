@@ -34,6 +34,22 @@
 				:else result))
 		([result] (xf result))))
 
+;; STATEFUL
+;; (transduce stateful-transducer conj (range 10))
+(defn stateful-transducer [xf]
+	(let [state (atom 100)]
+		(fn
+			([] (xf))
+			([result] (xf result))
+			([result input] 
+				(swap! state inc)
+				(cond
+					(odd? input)
+						(-> result
+							(xf input)
+							(xf (str "S:" @state)))
+						:else result)))))
+
 (defn -main [& args]
 	(println "transducers..."))
 
