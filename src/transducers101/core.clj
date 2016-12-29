@@ -50,6 +50,17 @@
 							(xf (str "S:" @state)))
 						:else result)))))
 
+;; REDUCING
+;; (transduce reducer conj [4 2 9])
+(defn reducer [xf]
+	(let [state (atom 1)]
+		(fn
+			([] (xf))
+			([result] (xf @state))
+			([result input] 
+				(swap! state #(* input %))
+				result))))
+
 (defn -main [& args]
 	(println "transducers..."))
 
