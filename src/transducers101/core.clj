@@ -1,4 +1,4 @@
-(ns xducer.core
+(ns transducers101.core
   (:gen-class))
 
 (defn tmpl-xducer [xf]
