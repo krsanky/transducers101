@@ -1,15 +1,7 @@
 (ns transducers101.core
-  (:gen-class))
+	(:gen-class))
 
-(defn tmpl-xducer [xf]
-	(fn
-		;; set-up
-		([] (xf))
-		;; process
-		([result input] (xf result input))
-		;; tear-down
-		([result] (xf result))))
-
+;; BASICS
 ;; old way:
 ;; (->> (range 10)
 ;;      (filter odd?)
@@ -28,6 +20,20 @@
 		;; tear-down
 		([result] (xf result))))
 
+;; DUPLICATION
+;; (transduce duplicate-odd conj (range 11))
+(defn duplicate-odd [xf]
+	(fn
+		([] (xf))
+		([result input] 
+			(cond
+				(odd? input)
+					(-> result
+						(xf input)
+						(xf input))
+				:else result))
+		([result] (xf result))))
+
 (defn -main [& args]
-  (println "transducers..."))
+	(println "transducers..."))
 
